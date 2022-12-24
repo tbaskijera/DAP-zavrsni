@@ -1,6 +1,3 @@
----
-nav_exclude: true
----
 # Seminarski rad i projektni zadatak, DAP, 2022./23
 
 **Autori:** Toni Baskijera i Martina Sirotić
