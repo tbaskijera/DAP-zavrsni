@@ -1,6 +1,5 @@
 library(readr)
 library(dplyr)
-library(tidyverse)
 
 data <- read_csv("players_21.csv")
 players <- as_tibble(data)
