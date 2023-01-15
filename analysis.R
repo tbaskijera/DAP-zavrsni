@@ -1,3 +1,6 @@
+# install.packages('readr')
+# install.packages('dplyr')
+# install.packages('caret')
 library(readr)
 library(dplyr)
 library(caret)
@@ -69,7 +72,28 @@ cmatrix <- confusionMatrix(factor(pr), factor(test$role))
 # Asocijacijska analiza - vizualizacija asocijacijskih pravila
 
 # Grupiranje - grupiranje k-sredina
+#install.packages("plotly") # za interaktivan prikaz
+library(plotly)
+library(ggplot2)
 
+k_means_fifa <- players_modified[,c(34:45, 47:80)]
+# ako je neka vrijednost NA zamijenjuje se sa 1
+k_means_fifa[is.na(k_means_fifa)] <-1
+
+set.seed(123)
+model <- kmeans(k_means_fifa, 3)
+table(clusters$cluster)
+
+results <- as.data.frame(cbind(players_modified[3], cluster=model$cluster, players_modified[107]))
+head(results[results$cluster == 1,],15) # defender
+head(results[results$cluster == 2,],15) # attacker + midfielder
+head(results[results$cluster == 3,],15) # goalkeeper
+
+ggplot(k_means_fifa, aes(x=defending, y= shooting, col= as.factor(model$cluster))) + geom_point()
+visualisation <- ggplot(k_means_fifa, aes(x=defending_standing_tackle, y= attacking_finishing, col= as.factor(model$cluster))) + geom_point()
+ggplotly(visualisation)
+# moze se nacrtat i neki drugi skup
+ggplot(k_means_fifa, aes(x=skill_dribbling, y= power_strength, col= as.factor(model$cluster))) + geom_point()
 
 
 # 
