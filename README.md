@@ -22,4 +22,6 @@ Skup podataka koji će se koristiti u ovom radu naziva se [FIFA 21 complete play
 
 ### Toni
 
+Moji zadaci na projektu bili su metoda agregacije iz skupa predprocesiranja, metoda umjetne neuronske mreže iz skupa klasifikacije, te metoda nasumičnih šuma, također iz skupa klasifikacije. Unatoč tome, kolegica i ja smo aktivno međusobno surađivali na svim zadacima, te su rješenja zajednička. Opseg posla smo dobro rasporedili te smo oboje odradili podjednak dio projektnog zadatka.
+
 ### Martina
