@@ -50,7 +50,7 @@ Cilj grupiranja K-srednjih vrijednosti je minimizirati zbroj kvadrata udaljenost
 
 ## Izvođenje eksperimenata
 
-## Vizualizacija i interpretacija rezultata
+## Prikaz i interpretacija rezultata
 
 ## Izvješće
 
