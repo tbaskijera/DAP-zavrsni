@@ -52,16 +52,16 @@ Cilj grupiranja K-srednjih vrijednosti je minimizirati zbroj kvadrata udaljenost
 
 Prije izvođenja eksperimenata bilo je potrebno učitati skup podataka te se upoznati sa vrstom i strukturom podataka nad kojima će se izvoditi razni postupci analize.
 
-```
+```r
 data <- read_csv("./players_21.csv")
 players <- as_tibble(data)
 head(players)
 summary(players)
 ```
 
-Nakon upoznavanja s podacima izvršeno je predprocesiranje. U procesu predprocesiranja podataka korištena je metoda agregacije. 
-Igrači u nogometu se svrstavaju u 4 osnovne grupe: napadači, veznjaci, obrana i golmani. U našem primjeru je to 5 grupa jer neki igrači nemaju definiranu ulogu i poziciju na kojoj igraju pa spadaju u grupu nepoznato.
-```
+Nakon upoznavanja s podacima izvršeno je predprocesiranje. U procesu predprocesiranja podataka korištena je metoda agregacije. Igrači u nogometu se svrstavaju u 4 osnovne grupe: napadači, veznjaci, obrana i golmani. U našem primjeru je to 5 grupa jer neki igrači nemaju definiranu ulogu i poziciju na kojoj igraju pa spadaju u grupu nepoznato.
+
+```r
 positions = unique(players["team_position"]) # sve jedinstvene pozicije
 attack= c("LS", "ST", "LW", "RW", "CF", "RS", "LF", "RF")
 midfield = c("CAM", "RCM", "CDM", "RDM", "LCM", "LM", "RM", "LDM", "LAM", "RAM")
@@ -86,8 +86,9 @@ role_groups # mozda treba ocistit sofifaid i tako neka polja?
 ```
 
 Po završetku agregacije uslijedio je novi eksperiment na području klasifikacije uz korištenje metode umjetnih neuronskih mreža.
-Definirali smo model po kojem smo provodili metodu umjetnih neuronskih mreža, a nakon toga smo stvorili predviđanje i matricu konfuzije po varijabli ```role```. 
-```
+Definirali smo model po kojem smo provodili metodu umjetnih neuronskih mreža, a nakon toga smo stvorili predviđanje i matricu konfuzije po varijabli ```role```.
+
+```r
 df <- players_modified %>%
   select("role", "defending", "attacking_finishing", "movement_agility", "shooting") %>% 
   filter(role!="unknown")
@@ -111,7 +112,8 @@ cmatrix
 ```
 
 Metoda slučajnih šuma iz područja ansambla je korištena kao 3 korak u analizi podataka. U paramterima modela je dodan ```tuneLength``` koji omogućava automatsko podešavanje algoritma odnodno u našem slučaju uzima 5 različitih vrijednosti i pokušava naći optimalnu vrijednost kako bi model bio što točniji. Nakon kreiranja modela, stvorili smo predviđanje i matricu konfuzije po varijabli ```role```.
-```
+
+```r
 ctreeFit <- train %>% train(role ~ ., 
                             method = "ctree",
                             data = .,
@@ -124,10 +126,8 @@ cmatrix <- confusionMatrix(factor(pr), factor(test$role))
 ```
 
 U području asocijacijske analize koristili smo metodu vizualizacije asocijacijskih pravila na temelju ```apriori``` algoritma. Važna svojstva apriori algortima su da su svi podskupovi čestog skupa učestali i da ako je neki skup rijedak, svi njegovi nadskupovi su rijetki. Odnosno ako se neko pravilo često pojavljuje sve stavke tog pravila su česte i obrnuto. Kako bismo dobili česte podake, numeričke podatke smo morali prilagoditi te smo ih pretvorili su stringove.
-```
-# install.packages('arulesViz')
-library(arulesViz)
 
+```r
 vis_db <- players_modified[,c(3, 15, 107, 20, 21, 34:38, 9, 12, 11, 27)]
 vis_db$weak_foot<-ifelse(vis_db[,4]<3, "poor weak foot", ifelse(vis_db[,4]<4, "average weak foot", ifelse(vis_db[,4]<6, "above average weak foot", NA)))
 vis_db$skill_moves<-ifelse(vis_db[,5]<3, "low_skills", ifelse(vis_db[,5]<4, "average_skils", ifelse(vis_db[,5]<6, "high_skills", NA)))
@@ -148,11 +148,9 @@ inspect(rules)
 plot(rules, method = "graph")
 ```
 
+Zadnji postupak koji smo koristili u analizi podataka je grupiranje k-sredina. Za uspješno grupiranje na k-sredina bilo je potrebno nepoznate vrijednosti zamijeniti sa 1. U modelu grupiranja koristili smo 3 centra iako imamo 5 mogućih definiranih uloga. Naime, iako neki nogometaši nemaju definiranu ulogu, oni se po statističkim podacima mogu smjestiti u neku poznatu grupu (napadači, veznjaci ili obrana).
 
-
-
-Zadnji postupak koji smo koristili u analizi podataka je grupiranje k-sredina. Za uspješno grupiranje na k-sredina bilo je potrebno nepoznate vrijednosti zamijeniti sa 1. U modelu grupiranja koristili smo 3 centra iako imamo 5 mogućih definiranih uloga. Naime, iako neki nogometaši nemaju definiranu ulogu, oni se po statističkim podacima mogu smjestiti u neku poznatu grupu (napadači, veznjaci ili obrana). 
-```
+```r
 k_means_fifa <- players_modified[,c(34:45, 47:80)]
 # ako je neka vrijednost NA zamijenjuje se sa 1
 k_means_fifa[is.na(k_means_fifa)] <-1
@@ -171,8 +169,8 @@ visualisation <- ggplot(k_means_fifa, aes(x=defending_standing_tackle, y= attack
 ggplotly(visualisation)
 # moze se nacrtat i neki drugi skup
 ggplot(k_means_fifa, aes(x=skill_dribbling, y= power_strength, col= as.factor(model$cluster))) + geom_point()
-
 ```
+
 ## Prikaz i interpretacija rezultata
 
 ### Agregacija
