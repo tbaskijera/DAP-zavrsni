@@ -244,14 +244,15 @@ Moji zadaci na projektu bili su metoda agregacije iz skupa metoda pretprocesiran
 Moji zadaci na projektu bili su metoda vizualizacije iz skupa metoda asocijacijskih pravila i metoda grupiranja k-sredina iz skupa metoda grupiranja. Kolega i ja smo međusobno surađivali na svim zadacima, probleme smo skupa rješavali, te su sva rješenja zajednička. Smatam kako su komunikacija i suradnja u timu bile na viskom nivou, zadatke na projektnom zadatku smo podijelili podjednako.
 
 ## Literatura
-[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#aggregation](28.12.2022.)
-[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html#artificial-neural-network] (28.12.2022.)
-[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html#random-forest](29.12.2022.)
-[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html#association-rule-visualization](28.01.2023.)
-[https://www.geeksforgeeks.org/convert-dataframe-column-to-list-in-r/](26.01.2023.)
-[https://r-graph-gallery.com/interactive-charts.html](27.01.2023.)
-[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html#k-means-clustering](28.01.2023.)
-[https://blog.devgenius.io/practicing-association-rules-in-r-e762de70bcd0](27.01.2023.)
-[https://www.rdatamining.com/examples/association-rules](27.01.2023.)
-[https://www.datacamp.com/tutorial/market-basket-analysis-r](28.01.2023.)
+
+[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#aggregation] (pristupljeno: 28.12.2022.)  
+[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html#artificial-neural-network] (pristupljeno: 28.12.2022.)  
+[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html#random-forest](pristupljeno: 29.12.2022.)
+[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html#association-rule-visualization] (pristupljeno: 28.01.2023.)
+[https://www.geeksforgeeks.org/convert-dataframe-column-to-list-in-r/] (pristupljeno: 26.01.2023.)
+[https://r-graph-gallery.com/interactive-charts.html](pristupljeno: 27.01.2023.)
+[https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html#k-means-clustering] (pristupljeno: 28.01.2023.)
+[https://blog.devgenius.io/practicing-association-rules-in-r-e762de70bcd0] (pristupljeno: 27.01.2023.)
+[https://www.rdatamining.com/examples/association-rules] (pristupljeno: 27.01.2023.)
+[https://www.datacamp.com/tutorial/market-basket-analysis-r](pristupljeno: 28.01.2023.)
 Materijali i bilješke s predavanja i vježbi iz kolegija *Dubinska analiza podataka* i *Primjenjena multivarijatna analiza podataka za informatičare*
