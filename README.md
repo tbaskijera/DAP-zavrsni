@@ -203,4 +203,4 @@ Moji zadaci na projektu bili su metoda agregacije iz skupa metoda predprocesiran
 
 ### Martina
 
-Moji zadaci na projektu bili su metoda vizualizacije iz skupa metoda asocijacijskih pravila i metoda grupiranja K - sredina iz skupa metoda grupiranja. Unatoč tome, kolega i ja smo aktivno međusobno surađivali na svim zadacima, te su rješenja zajednička. Opseg posla smo dobro rasporedili te smo oboje odradili podjednak dio projektnog zadatka.
+Moji zadaci na projektu bili su metoda vizualizacije iz skupa metoda asocijacijskih pravila i metoda grupiranja K - sredina iz skupa metoda grupiranja. Unatoč tome, kolegica i ja smo aktivno međusobno surađivali na svim zadacima, te su rješenja zajednička. Opseg posla smo dobro rasporedili te smo oboje odradili podjednak dio projektnog zadatka.
