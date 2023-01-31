@@ -52,6 +52,28 @@ Cilj grupiranja K-srednjih vrijednosti je minimizirati zbroj kvadrata udaljenost
 
 ## Prikaz i interpretacija rezultata
 
+### Agregacija
+
+Tijekom predprocesiranja u procesu agregacije smo dani skup podataka grupirali odnosno saželi sa operacijom srednje vrijednosti ```mean``` po ulozi igrača. Na slici je vidljivo da varijbala ```role``` ime 5 vrijednosti: ```attacker```, ```defender```, ```goalkeeper```, ```midfielder``` i ```unknown```, a vrijednosti ostalih varijabli su prosjek svih igrača koji spadaju u pojedinu ulogu na terenu.
+
+![agregacija](images/agregacija.jpg)
+
+### Grupiranje k-sredina
+
+Rezultat grupiranje k-sredina je dani skup grupiran u 3 klastera. U prvom klasteru se nalaze obrambeni igrači, u drugom klasteru golmani, a u terćem klasteru napadači i veznjaci. Iako bi bilo za očekivati da su napadači i vezanjaci odvojeni u različite klastere, skup podataka na kojem smo provodili eksperiment nije dovoljno precizan. Naime, postoje brojni primjeri gdje je uloga/pozcija nogometaša netočna (npr. L.Messi igra na poziciji napadača, ali je u skupu podataka navedeno da je vezni igrač ili S. Agüero igra na poziciji napadača, a u skupu podataka nema navedenu poziciju) te je samim time klasteriranje neprecizno i otežano. Zbog čestih grešaka u skupu podataka za pozicije igrača, naapadače i veznjake smo odlučili smjestiti u isti klaster.
+
+#### Vizualizacija 1
+
+Na slici je prikazano grupiranje na 3 klastera po varijblama ```defending``` i ```shooting```. Iz vizualizacije se može iščitati da golmani (klaster 2 - zeleno) ima vrlo loše gotovo nikakve vještine u tijekom pucanja prema golu ili u obrani. Također može se vidjeti da obrambeni igrači imaju vještine tijekom obrane bolje izražene od vještina pucanja prema golu.
+
+![kmeans1](images/k_means_shooting_defending.png)
+
+#### Vizualizacija 2
+
+Druga vizualizacija je interaktivna te se prelaskom miša preko točkice mogu vidjeti kojem klasteru igrač pripada, ```skill_dribbling``` i ```power_strangth``` za svakog igrača odnosno točkicu. Iz vizualizacije je vidljivo da golmani (zeleno) imaju jako loše vještine driblinga. Kod napadača i veznjaka su izražene vještine drublinga, ```power_strangth``` im jako varira. U odnsou na golmane, napadače i veznjake, obrambenim igračima su prosječne, ali im je ```power_strangth``` bolji od ostalih igrača.
+
+![kmeans2](images/interaktivni_prikaz2.jpeg)
+
 ## Izvješće
 
 ### Toni
@@ -60,4 +82,4 @@ Moji zadaci na projektu bili su metoda agregacije iz skupa metoda predprocesiran
 
 ### Martina
 
-Moji zadaci na projektu bili su metoda vizualizacije iz skupa metoda asocijacijskih pravila i metoda grupiranja K - sredina iz skupa metoda grupiranja. Unatoč tome, kolegica i ja smo aktivno međusobno surađivali na svim zadacima, te su rješenja zajednička. Opseg posla smo dobro rasporedili te smo oboje odradili podjednak dio projektnog zadatka.
+Moji zadaci na projektu bili su metoda vizualizacije iz skupa metoda asocijacijskih pravila i metoda grupiranja K - sredina iz skupa metoda grupiranja. Unatoč tome, kolega i ja smo aktivno međusobno surađivali na svim zadacima, te su rješenja zajednička. Opseg posla smo dobro rasporedili te smo oboje odradili podjednak dio projektnog zadatka.
