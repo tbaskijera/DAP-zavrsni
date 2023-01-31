@@ -179,6 +179,43 @@ Tijekom predprocesiranja u procesu agregacije smo dani skup podataka grupirali o
 
 ![agregacija](images/agregacija.jpg)
 
+### Umjetne neuronske mreže
+
+Model umjetnih neuronskih mreža ima točnost 78.22% nakon treniranja i testiranja po varijabli ```role```. Važno je naglasiti kako su iz skupa podataka na kojem je model treniran/testiran izbačeni igrači kojima je uloga/pozicija ```unknown``` ili ```goalkeeper```. Golamnima se *true positive* predviđanja uvijek bila 100% što znači da su svi golmani bili prepoznati kao golmani što je povećavalo točnost modela pa smo odlučili golmane izbaciti iz skupa podataka na kojem se izvodio ovaj eksperiment.
+Model je točno predvidio 157 napadača, ali je 23 napadača svrsato u veznjake, isto tako 480 obrambenih igrača je točno prepoznato, ali je 102 obrambena igrača svrtalo u veznjake. Kod veznjaka 168 igrača je krivo prepoznato, točnije 98 veznjaka je svrsano u napadače i 70 u obrambene igrače, a 415 igrača je točno svrtano u veznjake.
+
+![knn](images/knn_confusionMatrix.jpg)
+
+### Slučajne šume
+
+Model slučajnih šuma nakon treniranja i testiranja po varijabli ```role``` daje točnost od 73.16% što je zadovoljavajuće s obzirom na broj grešaka u podacima, a osobito u varijabli ```role```.
+Iz matrice konfuzije može se iščitati da je model točno predvidio 166 napadača, ali je 53 napdača je svrsato u veznjake. Za obrambene igrače model je točno predvidio za 448 igrača, no 117 igrača je deklarirao kao veznjake. Kod veznjaka je najgore točnost podjele, 370 veznjaka je model svrsato u veznjake, 107 u obrambene igrače, a 89 u napadače.
+Također sve navedeno se može pročitati iz statistike po klasama odnosno po vrijednostima u varijabli ```role```. Vidljivo je kako su vrijdnosti pojele za ```defender``` najtočnije, a kod ```midfielder``` najlošije. Može se zaključiti da je kod klase ```modfielder``` nalošiji omjer *true positive* i *false positive* predviđanja.
+
+![radnomForest](images/confusionMatrix_RF.jpg)
+
+### Vizualizacija asocijacijskih pravila
+
+Kod vizualizacije asocijacijskih pravila korišten je algoritam apriori. Za prikaz rezultata korišteni su razni dijagrami poput *A Grouped Matrix of association rules*, *A Frequency Histogram*, *A Parallel coordinate plot*, *A Graph model*.
+
+Na dijagramu *A Grouped Matrix of association rules* predstavlja pravila (skupove stavki) koje su povezane (od LHS do RHS). Na prikazanom dijagramu može se uočiti velika povezanost ```rule 11``` sa RHS ```skill_moves=low skill moves``` i ```pace=poor pace```. Također valja uočiti veličinu točkica, što je točkica veća veći je i ```support``` paramtetar (mjera koliko se često pravilo pojavljuje zajedno u transakcijama u postotku).
+
+Dijagram *A Parallel coordinate plot* predstavlja pravila (ili skupove stavki) kao paralelni koordinatni dijagram (od LHS do RHS).
+
+![vizualizacija1](images/rules1.jpg)
+
+Dijagram *A Frequency Histogram* prikazuje 25 varijabli sa pripadnim vrijednostima koje imaju najčešće frekvencije u transakcijama.
+
+![histogram](images/frequency_plot.jpg)
+
+Dijagram *A Parallel coordinate plot* predstavlja pravila (ili skupove stavki) kao paralelni koordinatni dijagram (od LHS do RHS).
+
+![parallel](images/parallel_plt.jpg)
+
+Dijagram *A Graph model* prikazuje povezanosti između pojedinih varijabli, na primjer može se zaključiti iz grafa da ```poor passing``` ima značajan utjecaj na ```average defense``` i obrnuto jer im je točkica jako crvena što znači da ```lift``` teži vrijednostima većim od 1, a to ujedno znači pozitivnu korelaciju.
+
+![graph](images/parallel_plt2.jpg)
+
 ### Grupiranje k-sredina
 
 Rezultat grupiranje k-sredina je dani skup grupiran u 3 klastera. U prvom klasteru se nalaze obrambeni igrači, u drugom klasteru golmani, a u terćem klasteru napadači i veznjaci. Iako bi bilo za očekivati da su napadači i vezanjaci odvojeni u različite klastere, skup podataka na kojem smo provodili eksperiment nije dovoljno precizan. Naime, postoje brojni primjeri gdje je uloga/pozcija nogometaša netočna (npr. L.Messi igra na poziciji napadača, ali je u skupu podataka navedeno da je vezni igrač ili S. Agüero igra na poziciji napadača, a u skupu podataka nema navedenu poziciju) te je samim time klasteriranje neprecizno i otežano. Zbog čestih grešaka u skupu podataka za pozicije igrača, naapadače i veznjake smo odlučili smjestiti u isti klaster.

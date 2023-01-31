@@ -59,17 +59,43 @@ cmatrix <- confusionMatrix(factor(prediction), factor(test$role))
 cmatrix
 
 # Klasifikacija - Umjetne šume
-ctreeFit <- train %>% train(role ~ ., # myb bi trebalo za neke druge podatke, ili myb za iste ko sta je pa da usporedimo dve metode kao?
-                            method = "ctree",
-                            data = .,
-                            tuneLength = 5,
-                            trControl = trainControl(method = "cv", indexOut = train_index))
-ctreeFit
-prediction <- predict(ctreeFit, test)
+control <- trainControl(method = "repeatedcv",
+                         number = 3,
+                         repeats = 5)
+modelRF <- train(role ~ .,
+               data = train,
+               method = "rf",
+               preProcess = c("scale", "center"),
+               trControl = control,
+               verbose = FALSE)
+prediction <- predict(modelRF, test)
 prediction
-cmatrix <- confusionMatrix(factor(pr), factor(test$role))
+cmatrix <- confusionMatrix(factor(prediction), factor(test$role))
+cmatrix
 
 # Asocijacijska analiza - vizualizacija asocijacijskih pravila
+vis_db <- players_modified[,c(3, 15, 107, 20, 21, 34:38, 9, 12, 11, 27)]
+vis_db$weak_foot<-ifelse(vis_db[,4]<3, "poor weak foot", ifelse(vis_db[,4]<4, "average weak foot", ifelse(vis_db[,4]<6, "above average weak foot", NA)))
+vis_db$skill_moves<-ifelse(vis_db[,5]<3, "low_skills", ifelse(vis_db[,5]<4, "average_skils", ifelse(vis_db[,5]<6, "high_skills", NA)))
+vis_db$pace<-ifelse(vis_db[,6]<74, "poor pace", ifelse(vis_db[,6]<87, "average pace", ifelse(vis_db[,6]<98, "above average pace", NA)))
+vis_db$shooting<-ifelse(vis_db[,7]<73, "poor shooting", ifelse(vis_db[,7]<82, "average shooting", ifelse(vis_db[,7]<94, "above average shooting", NA)))
+vis_db$passing<-ifelse(vis_db[,8]<66, "poor passing", ifelse(vis_db[,8]<82, "average passing", ifelse(vis_db[,8]<94, "above average passing", NA)))
+vis_db$dribbling<-ifelse(vis_db[,9]<78, "poor dribbling", ifelse(vis_db[,9]<87, "average dribbling", ifelse(vis_db[,9]<96, "above average dribbling", NA)))
+vis_db$defending<-ifelse(vis_db[,10]<45, "poor defense", ifelse(vis_db[,10]<81, "average defense", ifelse(vis_db[,10]<96, "above average defense", NA)))
+trans <- as(vis_db, "transactions")
+rul <- apriori(trans, parameter = list(supp = 0.5, conf = 0.5, minlen = 2))
+rul
+plot(rul, method="grouped", measure="support", shading="lift")
+
+transactions <- as(players_modified, "transactions")
+rules <- apriori(transactions, parameter = list(supp = 0.5, conf = 0.5, minlen = 2))
+rules
+inspect(rules)
+plot(rules, method = "graph")
+plot(rules, shading = "order", jitter=0)
+plot(rules, method = "grouped", by="prefered_foot")
+plot(head(rules, by = "prefered_foot", n = 100), method = "graph")
+plot(rules, method="grouped", measure="support", shading="lift")
 
 # Grupiranje - grupiranje k-sredina
 #install.packages("plotly") # za interaktivan prikaz
