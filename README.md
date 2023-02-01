@@ -59,7 +59,7 @@ head(players)
 summary(players)
 ```
 
-Nakon upoznavanja s podacima izvršeno je pretprocesiranje. U procesu pretprocesiranja podataka korištena je metoda agregacije. Igrači u nogometu se svrstavaju u 4 osnovne grupe: napadači, veznjaci, obrana i golmani. U našem primjeru je to 5 grupa jer neki igrači nemaju definiranu ulogu i poziciju na kojoj igraju pa spadaju u grupu nepoznato.
+Nakon upoznavanja s podacima izvršeno je pretprocesiranje. U procesu pretprocesiranja podataka korištena je metoda agregacije. Igrači u nogometu se svrstavaju u 4 osnovne grupe: napadači, veznjaci, braniči i golmani. U našem slučaju imati ćemo 5 grupa iz razloga što neki igrači nemaju definiranu ulogu i poziciju na kojoj igraju, pa spadaju u grupu nepoznato.
 
 ```r
 positions = unique(players["team_position"])
@@ -86,7 +86,7 @@ role_groups
 ```
 
 Po završetku agregacije uslijedio je novi eksperiment na području klasifikacije uz korištenje metode umjetnih neuronskih mreža.
-Definirali smo model po kojem smo provodili metodu umjetnih neuronskih mreža. U parametrima modela je dodan ```tuneLength``` koji omogućava automatsko podešavanje algoritma odnosno u našem slučaju uzima 5 različitih vrijednosti i pokušava naći optimalnu vrijednost kako bi model bio što točniji. Nakon kreiranja modela stvorili smo predviđanje i matricu konfuzije po varijabli ```role```.
+Definirali smo model po kojem smo provodili navedenu metodu. U parametrima modela je dodan ```tuneLength``` koji omogućava automatsko podešavanje algoritma, odnosno, u našem slučaju uzima 5 različitih vrijednosti i pokušava naći optimalnu vrijednost kako bi model bio što točniji. Nakon kreiranja modela stvorili smo predviđanje i matricu konfuzije po varijabli ```role```.
 
 ```r
 df <- players_modified %>%
@@ -111,7 +111,7 @@ cmatrix <- confusionMatrix(factor(prediction), factor(test$role))
 cmatrix
 ```
 
-Metoda slučajnih šuma iz područja ansambla je korištena kao 3 korak u analizi podataka. Tijekom treniranja modela koristili smo kontrolu koja se temelji na 3-fold unakrsnoj validaciji ponovljnoj 5 puta. Nakon kreiranja modela, stvorili smo predviđanje i matricu konfuzije po varijabli ```role```.
+Metoda slučajnih šuma iz područja ansambla je korištena kao 3 korak u analizi podataka. Tijekom treniranja modela koristili smo kontrolu koja se temelji na 3-fold unakrsnoj validaciji ponovljenoj 5 puta. Nakon kreiranja modela, stvorili smo predviđanje i matricu konfuzije na temelju varijable ```role```.
 
 ```r
 control <- trainControl(method = "repeatedcv",
@@ -130,7 +130,7 @@ cmatrix <- confusionMatrix(factor(prediction), factor(test$role))
 cmatrix
 ```
 
-U području asocijacijske analize koristili smo metodu vizualizacije asocijacijskih pravila na temelju ```apriori``` algoritma. Važna svojstva apriori algoritma su da su svi podskupovi čestog skupa učestali i da ako je neki skup rijedak, svi njegovi nadskupovi su rijetki. Odnosno ako se neko pravilo često pojavljuje sve stavke tog pravila su česte i obrnuto. Kako bismo dobili česte podatke, numeričke podatke smo morali prilagoditi te smo ih pretvorili su stringove.
+U području asocijacijske analize koristili smo metodu vizualizacije asocijacijskih pravila na temelju ```apriori``` algoritma. Važna svojstvo apriori algoritma je da su svi podskupovi čestog skupa također učestali, a ako je neki skup rijedak, svi njegovi nadskupovi su rijetki. Odnosno, ako se neko pravilo često pojavljuje, sve stavke tog pravila su česte i obrnuto. Kako bismo dobili česte podatke, numeričke podatke smo morali prilagoditi te smo ih pretvorili su stringove.
 
 ```r
 vis_db <- players_modified[,c(3, 107, 20, 21, 34:38)]
@@ -176,22 +176,22 @@ ggplotly(visualisation2)
 
 ### Agregacija
 
-Tijekom pretprocesiranja u procesu agregacije smo dani skup podataka grupirali odnosno saželi s operacijom srednje vrijednosti ```mean``` po ulozi igrača. Na slici je vidljivo da varijabla ```role``` ime 5 vrijednosti: ```attacker```, ```defender```, ```goalkeeper```, ```midfielder``` i ```unknown```, a vrijednosti ostalih varijabli su prosjek svih igrača koji spadaju u pojedinu ulogu na terenu.
+Tijekom pretprocesiranja u procesu agregacije smo dani skup podataka grupirali, odnosno saželi s operacijom srednje vrijednosti ```mean``` po ulozi igrača. Na slici je vidljivo da varijabla ```role``` ime 5 vrijednosti: ```attacker```, ```defender```, ```goalkeeper```, ```midfielder``` i ```unknown```, a vrijednosti ostalih varijabli su prosjek svih igrača koji spadaju u pojedinu poziciju (ulogu) na terenu.
 
 ![agregacija](images/agregacija.jpg)
 
 ### Umjetne neuronske mreže
 
-Model umjetnih neuronskih mreža ima točnost 78.22% nakon treniranja i testiranja po varijabli ```role```. Važno je naglasiti kako su iz skupa podataka na kojem je model treniran/testiran izbačeni igrači kojima je uloga/pozicija ```unknown``` ili ```goalkeeper```. Golmanima su *true positive* predviđanja uvijek bila 100% što znači da su svi golmani bili prepoznati kao golmani što je povećavalo točnost modela pa smo odlučili golmane izbaciti iz skupa podataka na kojem se izvodio ovaj eksperiment.
-Model je točno predvidio 157 napadača, ali je 23 napadača svrstao u veznjake, isto tako 480 obrambenih igrača je točno prepoznato, ali je 102 obrambena igrača svrstalo u veznjake. Kod veznjaka 168 igrača je krivo prepoznato, točnije 98 veznjaka je svrstano u napadače i 70 u obrambene igrače, a 415 igrača je točno svrstano u veznjake.
+Model umjetnih neuronskih mreža ima točnost 78.22% nakon treniranja i testiranja po varijabli ```role```. Važno je naglasiti kako su iz skupa podataka na kojem je model treniran/testiran izbačeni igrači kojima je uloga/pozicija ```unknown``` ili ```goalkeeper```. Golmanima su *true positive* predviđanja uvijek bila 100% što bi značilo da su svi golmani bili točno prepoznati, a to je znatno povećavalo točnost modela pa smo odlučili golmane izbaciti iz skupa podataka na kojem se izvodio ovaj eksperiment.
+Model je točno predvidio 157 napadača, ali je 23 napadača svrstao u veznjake. 480 obrambenih igrača je točno prepoznato, ali je 102 obrambena igrača svrstalo u veznjake. Kod veznjaka je 168 igrača krivo prepoznato, 98 veznjaka je svrstano u napadače i 70 u obrambene igrače, a ostalih 415 igrača je točno svrstano u veznjake.
 
 ![knn](images/knn_confusionMatrix.jpg)
 
 ### Slučajne šume
 
 Model slučajnih šuma nakon treniranja i testiranja po varijabli ```role``` daje točnost od 73.16% što je zadovoljavajuće s obzirom na broj grešaka u podacima, a osobito u varijabli ```role```.
-Iz matrice konfuzije može se iščitati da je model točno predvidio 166 napadača, ali je 53 napadača je svrstao u veznjake. Za obrambene igrače model je točno predvidio za 448 igrača, no 117 igrača je deklarirao kao veznjake. Kod veznjaka je najgora točnost podjele, 370 veznjaka je model svrstao u veznjake, 107 u obrambene igrače, a 89 u napadače.
-Također sve navedeno se može pročitati iz statistike po klasama odnosno po vrijednostima u varijabli ```role```. Vidljivo je kako su vrijednosti podjele za ```defender``` najtočnije, a kod ```midfielder``` najlošije. Može se zaključiti da je kod klase ```modfielder``` najlošiji omjer *true positive* i *false positive* predviđanja.
+Iz matrice konfuzije može se iščitati da je model točno predvidio 166 napadača, ali je 53 napadača svrstao u veznjake. Za obrambene igrače model je točno predvidio poziciju 448 igrača, no 117 igrača je deklarirao kao veznjake. Kod veznjaka je najgora točnost podjele, 370 veznjaka je model svrstao u veznjake, 107 u obrambene igrače, a 89 u napadače.
+Također sve navedeno se može pročitati iz statistike po klasama odnosno po vrijednostima u varijabli ```role```. Vidljivo je kako su vrijednosti podjele za ```defender``` najtočnije, a kod ```midfielder``` najlošije. Može se zaključiti da je kod klase ```midfielder``` najlošiji omjer *true positive* i *false positive* predviđanja.
 
 ![radnomForest](images/confusionMatrix_RF.jpg)
 
@@ -199,7 +199,7 @@ Također sve navedeno se može pročitati iz statistike po klasama odnosno po vr
 
 Kod vizualizacije asocijacijskih pravila korišten je algoritam apriori. Za prikaz rezultata korišteni su razni dijagrami poput *A Grouped Matrix of association rules*, *A Frequency Histogram*, *A Parallel coordinate plot*, *A Graph model*.
 
-Na dijagramu *A Grouped Matrix of association rules* predstavlja pravila (skupove stavki) koje su povezane (od LHS do RHS). Na prikazanom dijagramu može se uočiti velika povezanost ```rule 11``` s RHS ```skill_moves = low skill moves``` i ```pace = poor pace```. Također valja uočiti veličinu točkica, što je točkica veća veći je i ```support``` parametar (mjera koliko se često pravilo pojavljuje zajedno u transakcijama u postotku).
+Na dijagramu *A Grouped Matrix of association rules* predstavlja pravila (skupove stavki) koje su povezane (od LHS do RHS). Na prikazanom dijagramu može se uočiti velika povezanost ```rule 11``` s RHS ```skill_moves = low skill moves``` i ```pace = poor pace```. Također valja uočiti veličinu točkica: što je točkica veća, veći je i ```support``` parametar (mjera koliko se često pravilo pojavljuje zajedno u transakcijama, u postotku).
 
 Dijagram *A Parallel coordinate plot* predstavlja pravila (ili skupove stavki) kao paralelni koordinatni dijagram (od LHS do RHS).
 
@@ -213,23 +213,23 @@ Dijagram *A Parallel coordinate plot* predstavlja pravila (ili skupove stavki) k
 
 ![parallel](images/parallel_plt.jpg)
 
-Dijagram *A Graph model* prikazuje povezanosti između pojedinih varijabli, na primjer može se zaključiti iz grafa da ```passing = poor passing``` ima značajan utjecaj na ```defending = average defense``` i obrnuto jer im je točkica jako crvena što znači da ```lift``` teži vrijednostima većim od 1, a to ujedno znači pozitivnu korelaciju.
+Dijagram *A Graph model* prikazuje povezanosti između pojedinih varijabli, na primjer može se zaključiti da ```passing = poor passing``` ima značajan utjecaj na ```defending = average defense``` i obrnuto jer im je točkica jako crvena, što znači da ```lift``` teži vrijednostima većim od 1, a to ujedno znači pozitivnu korelaciju.
 
 ![graph](images/parallel_plt2.jpg)
 
 ### Grupiranje k-sredina
 
-Rezultat grupiranje k-sredina je dani skup grupiran u 3 klastera. U prvom klasteru se nalaze obrambeni igrači, u drugom klasteru golmani, a u trećem klasteru napadači i veznjaci. Iako bi bilo za očekivati da su napadači i veznjaci odvojeni u različite klastere, skup podataka na kojem smo provodili eksperiment nije dovoljno precizan. Naime, postoje brojni primjeri gdje je uloga/pozicija nogometaša netočna (npr. L.Messi igra na poziciji napadača, ali je u skupu podataka navedeno da je vezni igrač ili S. Agüero igra na poziciji napadača, a u skupu podataka nema navedenu poziciju) te je samim time klasteriranje neprecizno i otežano. Zbog čestih grešaka u skupu podataka za pozicije igrača, napadače i veznjake smo odlučili smjestiti u isti klaster.
+Rezultat grupiranja k-sredina je dani skup grupiran u 3 klastera. U prvom klasteru se nalaze obrambeni igrači, u drugom klasteru golmani, a u trećem klasteru napadači i veznjaci. Iako bi bilo za očekivati da su napadači i veznjaci odvojeni u različite klastere, skup podataka na kojem smo provodili eksperiment nije dovoljno precizan. Naime, postoje brojni primjeri gdje je uloga/pozicija nogometaša netočna (npr. L.Messi igra na poziciji napadača, ali je u skupu podataka navedeno da je vezni igrač ili S. Agüero igra na poziciji napadača, a u skupu podataka nema navedenu poziciju) te je samim time klasteriranje neprecizno i otežano. Zbog čestih grešaka u skupu podataka za pozicije igrača, napadače i veznjake smo odlučili smjestiti u isti klaster.
 
 #### Vizualizacija 1
 
-Na slici je prikazano grupiranje na 3 klastera po varijablama ```defending``` i ```shooting```. Iz vizualizacije se može iščitati da golmani (klaster 2 - zeleno) ima vrlo loše gotovo nikakve vještine u tijekom pucanja prema golu ili u obrani. Također može se vidjeti da obrambeni igrači (plavo) imaju vještine tijekom obrane bolje izražene od vještina pucanja prema golu.
+Na slici je prikazano grupiranje na 3 klastera po varijablama ```defending``` i ```shooting```. Iz vizualizacije se može iščitati da golmani (klaster 2 - zeleno) ima vrlo lošem gotovo nikakve vještine u pucanju na gol, kao ni u obrani. Također se može vidjeti da obrambeni igrači (plavo) imaju defenzivne vještine znatno izraženije od vještina pucanja prema golu.
 
 ![kmeans1](images/k_means_shooting_defending.png)
 
 #### Vizualizacija 2
 
-Druga vizualizacija je interaktivna te se prelaskom miša preko točkice mogu vidjeti kojem klasteru igrač pripada, ```skill_dribbling``` i ```power_strangth``` za svakog igrača odnosno točkicu. Iz vizualizacije je vidljivo da golmani (zeleno) imaju jako loše vještine driblinga. Kod napadača i veznjaka (plavo) su izražene vještine driblinga, ```power_strangth``` im jako varira. U odnosu na golmane, napadače i veznjake, obrambenim igračima (crveno) su prosječne, ali im je ```power_strangth``` bolji od ostalih igrača.
+Druga vizualizacija je interaktivna te se prelaskom miša preko točkice mogu vidjeti kojem klasteru igrač pripada, ```skill_dribbling``` i ```power_strangth``` za svakog igrača odnosno točkicu. Iz vizualizacije je vidljivo da golmani (zeleno) imaju jako loše vještine driblinga. Kod napadača i veznjaka (plavo) su izražene vještine driblinga, a ```power_strangth``` im jako varira. U odnosu na golmane, napadače i veznjake, obrambenim igračima (crveno) su prva dva atributa prosječna, ali im je ```power_strangth``` bolji od ostalih igrača.
 
 ![kmeans2](images/interaktivni_prikaz2.jpeg)
 
